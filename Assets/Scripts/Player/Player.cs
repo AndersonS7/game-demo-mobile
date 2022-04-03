@@ -28,17 +28,17 @@ public class Player : MonoBehaviour
         Initialize();
     }
 
-    public void Move()
+    public void Move(float direction)
     {
 
-        if (Input.GetKey(KeyCode.D))
+        if (direction == 1)
         {
             // vira e anda para direita
             _gameObj.transform.Translate(Vector2.right * _speed * Time.deltaTime);
             _gameObj.transform.localScale = new Vector3(1,
                 _gameObj.transform.localScale.y, _gameObj.transform.localScale.z);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (direction == -1)
         {
             // vira e anda para esquerda
             _gameObj.transform.Translate(Vector2.left * _speed * Time.deltaTime);
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         }
 
         // animação correndo
-        if (Input.GetAxis("Horizontal") != 0)
+        if (direction != 0)
         {
             _animator.SetBool("TaCorrendo", true);
         }

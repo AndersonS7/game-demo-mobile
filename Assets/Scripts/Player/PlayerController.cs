@@ -1,16 +1,19 @@
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
     public LayerMask layerGround, layerWall;
     public GameObject mask, mask2, platform1, platform2, gameOverPanel, endPanel, btnMenu, isDeadEnemy;
     public Text gemTex;
+    public Button btnRight, btnLeft;
 
     public static bool isWall, colliderEnemy;
 
-
-    private int contGem;
+    private int auxIsJump;
+    private int contGem, direction;
 
     Player p;
 
@@ -26,7 +29,10 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerPrefs.GetString("Start") == "start")
         {
-            p.Jump();
+            if (auxIsJump == 1)
+            {
+                p.Jump();
+            }
 
             // mostra para o background quando o player bateu na parede
             if (p.isWall())
@@ -39,13 +45,26 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     void FixedUpdate()
     {
         if (PlayerPrefs.GetString("Start") == "start")
         {
-            p.Move();
+            p.Move(direction);
         }
     }
+
+    public void TouchMove(int auxDirection)
+    {
+        direction = auxDirection;
+    }
+
+    public void TouchJump(int isJump)
+    {
+        print(isJump);
+        auxIsJump = isJump;
+    }
+
     private void EnemyDeadAnimator(Transform obj)
     {
         Instantiate(isDeadEnemy, obj.position, obj.rotation);
@@ -123,7 +142,6 @@ public class PlayerController : MonoBehaviour
     {
         OnColliderController(coll.gameObject);
     }
-
     private void IncrementGem()
     {
         contGem++;
